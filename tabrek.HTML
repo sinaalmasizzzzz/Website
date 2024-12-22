@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایش متن</title>
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #d63384;
+        }
+
+        #text-display {
+            font-size: 20px;
+            color: #555;
+            line-height: 1.8;
+            margin-top: 20px;
+            white-space: pre-line; /* نمایش خط‌های جدید */
+        }
+
+        .mother-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 8px solid #d63384;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .audio-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background: #d63384;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        .audio-button:hover {
+            background: #a92c6f;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>روز مادر مبارک!</h1>
+        <img src="https://github.com/sinaalmasizzzzz/-/blob/main/IMG_%DB%B2%DB%B0%DB%B2%DB%B4%DB%B1%DB%B2%DB%B2%DB%B2_%DB%B1%DB%B9%DB%B2%DB%B3%DB%B4%DB%B1.jpg?raw=true" alt="Mother" class="mother-image">
+        <div id="text-display">در حال بارگذاری متن...</div>
+        <button class="audio-button" onclick="playAudio()">پخش ترانه</button>
+        <audio id="audio-player">
+            <source src="https://dl.shabamusic.com/Music/Archive/Amin%20Rostami/Amin%20Rostami%20-%20Inghad%20Toro%20Doos%20Daram.mp3" type="audio/mpeg">
+            مرورگر شما پخش این فایل صوتی را پشتیبانی نمی‌کند.
+        </audio>
+    </div>
+
+    <script>
+        async function fetchAndDisplayText() {
+            // آدرس فایل متنی
+            const fileUrl = 'https://raw.githubusercontent.com/sinaalmasizzzzz/-/refs/heads/main/T.txt';
+            const response = await fetch(fileUrl);
+            const text = await response.text();
+
+            // تقسیم متن به خطوط
+            const lines = text.split('\n');
+            const textDisplay = document.getElementById('text-display');
+            let index = 0;
+
+            // نمایش خط‌به‌خط متن هر ۱۰ ثانیه
+            function showNextLines() {
+                if (index < lines.length) {
+                    // نمایش دو خط
+                    textDisplay.textContent = lines.slice(index, index + 2).join('\n');
+                    index += 2; // حرکت به خط بعدی
+                } else {
+                    textDisplay.textContent = "پایان متن";
+                    clearInterval(interval);
+                }
+            }
+
+            const interval = setInterval(showNextLines, 15000); // هر ۱۰ ثانیه یک بار
+            showNextLines(); // نمایش اولین خطوط بلافاصله
+        }
+
+        function playAudio() {
+            const audio = document.getElementById('audio-player');
+            audio.play();
+        }
+
+        // فراخوانی تابع
+        fetchAndDisplayText();
+    </script>
+</body>
+</html>
